@@ -2,26 +2,30 @@
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Marek on 14. 10. 2016.
  */
 public class Dictionary {
 
+    Set<String> treeSet = new TreeSet<String>();
     static String[] words;
     static ObservableList<String> dictionaryWords = FXCollections.observableArrayList();
 
     /**
      * createArray()
-     * Pomocí této metody odstraníme z textu nežádoucí znaky.
+     * Pomocí této metody odstraníme z textu nežádoucí znaky a načteme do datového formátu TreeSet
      */
     public void createArray() {
         String s = UserInterface.textArea.getText().toLowerCase();
         s = s.replaceAll("[^a-zěščřžýáíéůú]", " ");
         words = s.split("[[ ]*|[,]*|[\\.]*|[:]*|[/]*|[!]*|[?]*|[+]*]+");
+
+        for (String token : words) {
+            treeSet.add(token);
+        }
+        System.out.println(treeSet);
     }
 
     /**
