@@ -7,6 +7,4 @@ public class Main {
         // write your code here
         launch(UserInterface.class, args);
     }
-
-    // halalalal commit dat shit 
 }

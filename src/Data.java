@@ -87,12 +87,14 @@ public class Data {
      */
     public void saveDictionary(){
         try {
-            UserInterface.BuffWriter = new BufferedWriter(new FileWriter("Dictionary.txt"));
-            for (int i = 0; i < Dictionary.nonDuplicatedArrayString().length; i++) {
-                UserInterface.BuffWriter.write(Dictionary.nonDuplicatedArrayString()[i]);
-                UserInterface.BuffWriter.newLine();
-
+            File f = new File("Dictionary.txt");
+            f.createNewFile();
+            FileWriter fr = new FileWriter(f);
+            for (String s: Dictionary.treeSet) {
+                fr.write(s+"\r\n");
             }
+            fr.close();
+
 
         } catch (IOException e) {
         } finally {
@@ -106,27 +108,4 @@ public class Data {
 
     }
 
-    public void saveFile() {
-
-        try {
-            UserInterface.BuffWriter = new BufferedWriter(new FileWriter("Dictionary.txt"));
-            for (int i = 0; i < Dictionary.nonDuplicatedArrayString().length; i++) {
-                UserInterface.BuffWriter.write(Dictionary.nonDuplicatedArrayString()[i]);
-                UserInterface.BuffWriter.newLine();
-
-            }
-
-        } catch (IOException e) {
-        } finally {
-            try {
-                if (UserInterface.BuffWriter != null) {
-                    UserInterface.BuffWriter.close();
-                }
-            } catch (IOException e) {
-            }
-        }
-
-
-
-    }
 }

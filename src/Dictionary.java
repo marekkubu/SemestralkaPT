@@ -9,9 +9,9 @@ import java.util.*;
  */
 public class Dictionary {
 
-    Set<String> treeSet = new TreeSet<>();
+    static Set<String> treeSet = new TreeSet<>();
     static String[] words;
-    static ObservableList<String> dictionaryWords = FXCollections.observableArrayList();
+    static ObservableList<String> list = FXCollections.observableArrayList();
 
     /**
      * createArray()
@@ -30,18 +30,11 @@ public class Dictionary {
      * Vytvoří pole unikátních slov, ze kterých se vytvoří slovník.
      * @return
      */
-    public static String[] nonDuplicatedArrayString() {
-        dictionaryWords.clear();
-        Arrays.sort(words);
-        Set<String> set = new LinkedHashSet<>(Arrays.asList(words));
-        String[] result = new String[set.size()];
-        set.toArray(result);
-
-        for (int i = 0; i < set.size(); i++) {
-            dictionaryWords.add(result[i]);
+    public static void nonDuplicatedArrayString() {
+         list.clear();
+        for (String s: Dictionary.treeSet) {
+            list.add(s);
         }
-
-        UserInterface.listView.setItems(dictionaryWords);
-        return set.toArray(result);
+        UserInterface.listView.setItems(list);
     }
 }

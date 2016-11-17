@@ -180,7 +180,6 @@ public class UserInterface extends Application {
         textitem2.setOnAction(event -> data.uploadText());
 
         MenuItem textItem3 = new MenuItem("_Save File");
-        //textItem3.setOnAction(event -> data.saveFile() );
 
         text.getItems().addAll(textitem2, textItem3, textitem1);
 
@@ -189,7 +188,6 @@ public class UserInterface extends Application {
         dicItem1.setOnAction(event -> data.uploadDictionary());
 
         MenuItem dicItem2 = new MenuItem("_Save");
-        //dicItem1.setOnAction(event -> );
 
         dic.getItems().addAll(dicItem1, dicItem2);
 
