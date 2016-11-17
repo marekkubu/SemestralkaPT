@@ -89,11 +89,11 @@ public class Data {
         try {
             File f = new File("Dictionary.txt");
             f.createNewFile();
-            FileWriter fr = new FileWriter(f);
-            for (String s: Dictionary.treeSet) {
-                fr.write(s+"\r\n");
+            try (FileWriter fr = new FileWriter(f)) {
+                for (String s: Dictionary.treeSet) {
+                    fr.write(s+"\r\n");
+                }
             }
-            fr.close();
 
 
         } catch (IOException e) {
