@@ -154,6 +154,7 @@ public class UserInterface extends Application {
                 alert.showAndWait();
 
             } else {
+                System.out.println(Trie.find(searchTextField.getText().toLowerCase(), Trie.root));
                 search.indexSearching(searchTextField.getText().toLowerCase());
             }
         });

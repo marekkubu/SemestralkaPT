@@ -24,6 +24,8 @@ public class Dictionary {
 
         treeSet.addAll(Arrays.asList(words));
         System.out.println(treeSet);
+
+        Trie.uploadDataToTrie();
     }
 
     /**
