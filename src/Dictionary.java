@@ -28,13 +28,12 @@ public class Dictionary {
 
     /**
      * Vytvoří pole unikátních slov, ze kterých se vytvoří slovník.
-     * @return
      */
     public static void nonDuplicatedArrayString() {
          list.clear();
-        for (String s: Dictionary.treeSet) {
-            list.add(s);
-        }
+         Dictionary.treeSet.stream().forEach((s) -> {
+             list.add(s);
+        });
         UserInterface.listView.setItems(list);
     }
 }
