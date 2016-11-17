@@ -1,7 +1,6 @@
 
 import com.sun.javafx.scene.control.skin.VirtualFlow;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import javafx.application.Application;
@@ -16,8 +15,6 @@ import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -160,8 +157,8 @@ public class UserInterface extends Application {
                 search.indexSearching(searchTextField.getText().toLowerCase());
             }
         });
-        controls.setMargin(searchButton, new Insets(5));
-        controls.setMargin(searchTextField, new Insets(2, 5, 5, 5));
+        HBox.setMargin(searchButton, new Insets(5));
+        HBox.setMargin(searchTextField, new Insets(2, 5, 5, 5));
         controls.getChildren().addAll(searchButton, searchTextField);
 
         return controls;
