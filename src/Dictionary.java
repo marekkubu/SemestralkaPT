@@ -9,7 +9,7 @@ import java.util.*;
  */
 public class Dictionary {
 
-    Set<String> treeSet = new TreeSet<String>();
+    Set<String> treeSet = new TreeSet<>();
     static String[] words;
     static ObservableList<String> dictionaryWords = FXCollections.observableArrayList();
 
@@ -22,9 +22,7 @@ public class Dictionary {
         s = s.replaceAll("[^a-zěščřžýáíéůú]", " ");
         words = s.split("[[ ]*|[,]*|[\\.]*|[:]*|[/]*|[!]*|[?]*|[+]*]+");
 
-        for (String token : words) {
-            treeSet.add(token);
-        }
+        treeSet.addAll(Arrays.asList(words));
         System.out.println(treeSet);
     }
 
