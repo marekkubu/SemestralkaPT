@@ -1,44 +1,9 @@
+import java.io.IOException;
 import java.lang.ref.Reference;
 
 /**
  * Created by Marek on 17. 11. 2016.
  */
-/*public class Trie {
-
-    String[] edges= new String[25];
-
-    public void addWord(Vertex vrchol, String word){
-        if (word.isEmpty() == true) {
-            vrchol.words=vrchol.words+1;
-        }
-        else {
-            vrchol.prefixes=vrchol.prefixes+1;
-            char k = firstChar(word);
-
-            for (int i = 0; i < edges.length; i++) {
-
-             if (edges[i].equals(k)==false) {
-                 edges[k]=createEdge();
-
-             }
-            }
-        }
-
-    }
-
-    private String createEdge() {
-
-        return null;
-    }
-
-
-    public char firstChar(String word){
-        char k = 0;
-        k=word.charAt(0);
-        return k;
-    }
-
-}*/
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,8 +36,10 @@ public class Trie {
         if (child == null) {
             Node node = new Node(data.charAt(0), data.length() == 1);
             root.children[getIndex(data.charAt(0))] = node;
+
             if (data.length() > 1) {
                 insert(data.substring(1, data.length()), node);
+
             }
         } else {
             if (data.length() == 1) {
@@ -81,6 +48,34 @@ public class Trie {
                 insert(data.substring(1, data.length()), child);
             }
         }
+    }
+
+    static void vypis(Node root){
+        //System.out.println(root.children.length);
+        for (int i = 0; i < root.children.length; i++) {
+            if (root.children[i]!= null || root.children[i].isLeaf == true) {
+
+                System.out.println(root.children[i].data + " is Leaf" + " i="+i);
+            }
+            else{
+                Node node = root.children[i];
+
+                for (int j = 0; j < node.children.length; j++) {
+                    if (node.children[j]!= null || node.children[j].isLeaf==true ) {
+                        System.out.println(node.children[j].data);
+                    }
+                    else{
+                        vypis(node);
+                    }
+                }
+
+            }
+
+
+
+
+        }
+
     }
 
     static boolean find(String data, Node root) {
@@ -100,6 +95,7 @@ public class Trie {
             }
         }
     }
+
     public static void uploadDataToTrie(){
 
         for (int i = 0; i < Dictionary.treeSet.size(); i++) {
@@ -145,7 +141,7 @@ public class Trie {
 
     private static List<String> strings = new ArrayList<>();
 
-    private static List<String> getAll() {
+    public static List<String> getAll() {
         strings = new ArrayList<String>();
         findAllDFS(root, "");
         return strings;
@@ -164,7 +160,6 @@ public class Trie {
             }
         }
     }
-
 
  /*  public static void main(String[] args) {
         insert("abc", root);

@@ -26,6 +26,9 @@ public class Dictionary {
         System.out.println(treeSet);
 
         Trie.uploadDataToTrie();
+        Trie.vypis(Trie.root);
+
+
     }
 
     /**
