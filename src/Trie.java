@@ -51,29 +51,18 @@ public class Trie {
     }
 
     static void vypis(Node root){
-        //System.out.println(root.children.length);
         for (int i = 0; i < root.children.length; i++) {
-            if (root.children[i]!= null || root.children[i].isLeaf == true) {
+            if (root.children[i]!= null && root.children[i].isLeaf == true) {
 
                 System.out.println(root.children[i].data + " is Leaf" + " i="+i);
-            }
-            else{
-                Node node = root.children[i];
-
-                for (int j = 0; j < node.children.length; j++) {
-                    if (node.children[j]!= null || node.children[j].isLeaf==true ) {
-                        System.out.println(node.children[j].data);
-                    }
-                    else{
-                        vypis(node);
-                    }
-                }
 
             }
+            if (root.children[i]!= null && root.children[i].isLeaf == false) {
+                Node child=root.children[i];
+                System.out.println(child.data);
+                vypis(child);
 
-
-
-
+            }
         }
 
     }
