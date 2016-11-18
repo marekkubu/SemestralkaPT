@@ -45,6 +45,7 @@ public class Trie {
             if (data.length() == 1) {
                 child.isLeaf = true;
             } else {
+                child.isLeaf = false;
                 insert(data.substring(1, data.length()), child);
             }
         }
@@ -57,13 +58,17 @@ public class Trie {
                 System.out.println(root.children[i].data + " is Leaf" + " i="+i);
 
             }
+            Node child=root.children[i];
             if (root.children[i]!= null && root.children[i].isLeaf == false) {
-                Node child=root.children[i];
                 System.out.println(child.data);
-                vypis(child);
-
+                if (child.children != null) {
+                    vypis(child);
+                }
             }
         }
+
+    }
+    static void komprimace(Node root){
 
     }
 
@@ -149,23 +154,5 @@ public class Trie {
             }
         }
     }
-
- /*  public static void main(String[] args) {
-        insert("abc", root);
-        insert("xyz", root);
-        insert("abcd", root);
-        insert("abcde", root);
-
-
-        delete("abcd", root);
-
-        System.out.println(find("abc", root));
-        System.out.println(find("abcd", root));
-        System.out.println(find("ab", root));
-        System.out.println(find("xyz", root));
-
-
-        System.out.println(getAll());
-    }*/
 
 }
