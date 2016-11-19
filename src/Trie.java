@@ -9,18 +9,19 @@ import java.util.List;
 
 public class Trie {
 
-    public static Node root = new Node(' ', false);
+    public static Node root = new Node("", false);
 
     static int getIndex(char x) {
         return ((int) x) - ((int) 'a');
     }
 
     static class Node {
-        char data;
+        String data;
         boolean isLeaf;
         Node[] children;
+        Node parent;
 
-        Node(char data, boolean leaf) {
+        Node(String data, boolean leaf) {
             this.data = data;
             this.isLeaf = leaf;
             this.children = new Node[26];
@@ -34,7 +35,7 @@ public class Trie {
         }
         Node child = root.children[getIndex(data.charAt(0))];
         if (child == null) {
-            Node node = new Node(data.charAt(0), data.length() == 1);
+            Node node = new Node(data.substring(0,1), data.length() == 1);
             root.children[getIndex(data.charAt(0))] = node;
 
             if (data.length() > 1) {
@@ -45,7 +46,7 @@ public class Trie {
             if (data.length() == 1) {
                 child.isLeaf = true;
             } else {
-                child.isLeaf = false;
+                //child.isLeaf = false;
                 insert(data.substring(1, data.length()), child);
             }
         }
@@ -53,13 +54,14 @@ public class Trie {
 
     static void vypis(Node root){
         for (int i = 0; i < root.children.length; i++) {
-            if (root.children[i]!= null && root.children[i].isLeaf == true) {
-
+            if (root.children[i]!= null) {
+                if (root.children[i].isLeaf == true) {
                 System.out.println(root.children[i].data + " is Leaf" + " i="+i);
-
+                }
             }
+
             Node child=root.children[i];
-            if (root.children[i]!= null && root.children[i].isLeaf == false) {
+            if (root.children[i]!= null) {
                 System.out.println(child.data);
                 if (child.children != null) {
                     vypis(child);
@@ -68,7 +70,56 @@ public class Trie {
         }
 
     }
-    static void komprimace(Node root){
+    public static int pocetPotomku(Node root){
+        int pocet =0;
+        for (int i = 0; i < root.children.length; i++) {
+            if (root.children[i] != null) {
+                pocet ++;
+            }
+        }
+        return pocet;
+    }
+    static void komprimace(Node root) {
+
+           /* for (int i = 0; i < root.children.length; i++) {
+                if (root.children[i] != null) {
+                    if (root.children[i].isLeaf == false) {
+                        komprimace(root.children[i]);
+                    }
+                    if (root.children[i] != null && root.children[i].isLeaf == true && pocetPotomku(root) == 1 && root.data.length() == 1) {
+                        root.data = root.data.concat(root.children[i].data);
+                        System.out.println(root.data + " - kontrola");
+                        root.children[i] = null;
+                        root.isLeaf = true;
+                        System.out.println(root.parent.data + " parent");
+                        if (root.children != null && root.parent.data != null) {
+                            komprimace(root);
+                        }
+                    }
+                }
+            }*/
+        for (int i = 0; i < root.children.length; i++) {
+            if (root.children[i] != null) {
+                Node child= root.children[i];
+                if (child.children != null && pocetPotomku(child)==1 && child.isLeaf==false ) {
+                    for (int j = 0; j <child.children.length; j++) {
+                        if (child.children[j].data!=null) {
+                            System.out.println("olal");
+                        }
+                        System.out.println(child.children[j].data + " jsem tu");
+                       /* if (child.children[j].data!=null) {
+                            System.out.println(child.children[j].data);
+                            child.data=child.data.concat(child.children[j].data);
+                            child.isLeaf=child.children[j].isLeaf;
+                            System.out.println(child.data + " - kontrola");
+                            komprimace(child);
+                        }*/
+
+                    }
+                }
+            }
+
+        }
 
     }
 
@@ -143,7 +194,7 @@ public class Trie {
 
     private static void findAllDFS(Node node, String old) {
         if (node != null) {
-            if (node.data != ' ') {
+            if (node.data != "") {
                 old = old + node.data;
             }
             if (node.isLeaf) {
