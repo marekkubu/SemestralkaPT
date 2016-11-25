@@ -87,8 +87,10 @@ public class Trie {
                 if (child.children != null) {
                     for (int j = 0; j < child.children.length; j++) {
                         if (pocetPotomku(child) == 1 && child.isLeaf == false) {
-                            if (child.children[j] != null && child.isLeaf == false) {
+                            if (child.children[j] != null) {
                                 System.out.println(child.children[j].data +" aktualni pozice : leaf : " + child.children[j].isLeaf);
+                                if(child.children[j].data == null )
+                                    return;
                                 child.children[j].data = child.data.concat(child.children[j].data);
                                 child.isLeaf =  child.children[j].isLeaf;
                                 child.data = null;
@@ -110,9 +112,10 @@ public class Trie {
                     }
                 }
 
-            }//                       bear bell bull buy
+            }//                       bear bell bid bull buy sell stock stop
 
         }
+            return;
     }
 
     static boolean find(String data, Node root) {
