@@ -19,7 +19,6 @@ public class Trie {
         String data;
         boolean isLeaf;
         Node[] children;
-        Node parent;
 
         Node(String data, boolean leaf) {
             this.data = data;
@@ -62,7 +61,7 @@ public class Trie {
 
             Node child=root.children[i];
             if (root.children[i]!= null) {
-                System.out.println(child.data);
+                //System.out.println(child.data);
                 if (child.children != null) {
                     vypis(child);
                 }
@@ -79,6 +78,8 @@ public class Trie {
         }
         return pocet;
     }
+
+
     static void komprimace(Node root) {
 
            /* for (int i = 0; i < root.children.length; i++) {
@@ -101,19 +102,28 @@ public class Trie {
         for (int i = 0; i < root.children.length; i++) {
             if (root.children[i] != null) {
                 Node child= root.children[i];
-                if (child.children != null && pocetPotomku(child)==1 && child.isLeaf==false ) {
-                    for (int j = 0; j <child.children.length; j++) {
-                        if (child.children[j].data!=null) {
-                            System.out.println("olal");
+                if (child.children != null) {
+                    for (int j = 0; j < child.children.length; j++) {
+                        if (pocetPotomku(child)==1 && child.isLeaf==false) {
+                            if (child.children[j] != null) {
+                                //System.out.println(child.children[j].data +" aktualni pozice");
+                                child.children[j].data = child.data.concat(child.children[j].data);
+                                child.data = null;
+                                System.out.println(child.children[j].data +" spojeny uzel");
+                                komprimace(child);
+                            } else if (child.children != null && pocetPotomku(child) == 1 && child.isLeaf == true) {
+                                if (child.children[j] != null) {
+                                    System.out.println(child.children[j].data + " dalsi");
+                                    komprimace(child.children[j]);
+                                }
+                            }
                         }
-                        System.out.println(child.children[j].data + " jsem tu");
-                       /* if (child.children[j].data!=null) {
-                            System.out.println(child.children[j].data);
-                            child.data=child.data.concat(child.children[j].data);
-                            child.isLeaf=child.children[j].isLeaf;
-                            System.out.println(child.data + " - kontrola");
-                            komprimace(child);
-                        }*/
+                        else if (pocetPotomku(child)>1) {
+                            if (child.children[j] != null && child.children[j].isLeaf==false) {
+                                System.out.println(child.data + " vice potomku");
+                                komprimace(child);
+                            }
+                        }
 
                     }
                 }
