@@ -3,6 +3,8 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -49,7 +51,7 @@ public class UserInterface extends Application {
     Search search = new Search();
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) throws IOException {
 
         primaryStage.setTitle("Semestrální práce PT");
         primaryStage.setScene(createScene());
@@ -94,7 +96,13 @@ public class UserInterface extends Application {
         listView.setEditable(true);
 
         Button saveButton = new Button("Save");
-        saveButton.setOnAction(event -> data.saveDictionary());
+        saveButton.setOnAction(event -> {
+            try {
+                data.saveDictionary();
+            } catch (IOException ex) {
+                Logger.getLogger(UserInterface.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
         saveButton.setPrefWidth(BUTTON_SIZE);
         
         Button openButton = new Button("Open");
@@ -186,9 +194,9 @@ public class UserInterface extends Application {
                         Trie.uploadDataToTrie();
                         Dictionary.nonDuplicatedArrayString();
                         // ... user chose "Add"
-                    } else {
+                    }// else {
                         // ... user chose CANCEL or closed the dialog
-                    }
+                    //}
                    // Levenshtein.bubbleSort();
                 }
                 else {
@@ -203,7 +211,11 @@ public class UserInterface extends Application {
                     GridPane gridPane = new GridPane();
                     gridPane.setMaxWidth(Double.MAX_VALUE);
                     gridPane.add(textAreaIndex,0,0);
-                    search.indexSearching(searchTextField.getText().toLowerCase());
+                    try {
+                        search.indexSearching(searchTextField.getText().toLowerCase());
+                    } catch (IOException ex) {
+                        Logger.getLogger(UserInterface.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     alert.getDialogPane().setExpandableContent(gridPane);
                     alert.showAndWait();
                     //System.out.println("Hledane slovo "+searchTextField.getText().toLowerCase()+" se nachazi ve slovniku.");

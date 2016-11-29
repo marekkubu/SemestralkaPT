@@ -51,18 +51,14 @@ public class Trie {
 
     static void vypis(Node root) {
         for (int i = 0; i < root.children.length; i++) {
-            if (root.children[i] != null) {
-                if (root.children[i].isLeaf == true) {
+            if (root.children[i] != null && root.children[i].isLeaf == true) { 
                     System.out.println(root.children[i].data + " is Leaf" + " i=" + i);
-                }
             }
 
             Node child = root.children[i];
-            if (root.children[i] != null) {
+            if (root.children[i] != null && child.children != null) {
                 //System.out.println(child.data);
-                if (child.children != null) {
-                    vypis(child);
-                }
+                    vypis(child);   
             }
         }
 
@@ -97,15 +93,13 @@ public class Trie {
                                 child.isLeaf = children1.isLeaf;
                                 child.data = null;
                                 komprimace(child);
-                            } else if (child.children != null && pocetPotomku(child) == 1 && child.isLeaf == true) {
-                                if (children1 != null) {
+                            } else if (child.children != null && pocetPotomku(child) == 1 
+                                    && child.isLeaf == true &&children1 != null) {
                                     komprimace(children1);
-                                }
                             }
-                        } else if (pocetPotomku(child) > 1) {
-                            if (children1 != null && children1.isLeaf == false) {
-                                komprimace(child);
-                            }
+                        } else if (pocetPotomku(child) > 1 && children1 != null 
+                                && children1.isLeaf == false) {
+                               komprimace(child);
                         }
                     }
                 }
@@ -145,15 +139,16 @@ public class Trie {
     }
 
     private static void findAllDFS(Node node, String old) {
+        String sOld = old;
         if (node != null) {
             if (!"".equals(node.data)) {
-                old = old + node.data;
+                sOld = sOld + node.data;
             }
             if (node.isLeaf) {
-                strings.add(old);
+                strings.add(sOld);
             }
             for (Node node1 : node.children) {
-                findAllDFS(node1, old);
+                findAllDFS(node1, sOld);
             }
         }
     }

@@ -90,25 +90,17 @@ public class Data {
     /**
      * Metoda, která uloží obsah slovníku do Dictionary.txt.
      */
-    public void saveDictionary(){
+    public void saveDictionary() throws IOException{
         Dictionary dictionary = new Dictionary();
-
-        try {
            // dictionary.createArray();
             UserInterface.BuffWriter = new BufferedWriter(new FileWriter("Dictionary.txt"));
             for (String s : dictionary.treeSet) {
                 UserInterface.BuffWriter.write(s);
                 UserInterface.BuffWriter.newLine();
             }
-
-        } catch (IOException e) {
-        } finally {
-            try {
                 if (UserInterface.BuffWriter != null) {
                     UserInterface.BuffWriter.close();
                 }
-            } catch (IOException e) {
-            }
         }
     }
-}
+
