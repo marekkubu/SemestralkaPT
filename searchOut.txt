@@ -1,1 +1,1 @@
-Searched word 'aho' index: 0-2
+Searched word 'ahoj' index: 0-3

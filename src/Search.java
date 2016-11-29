@@ -26,7 +26,8 @@ public class Search {
             dictionary.createArray();
             UserInterface.BuffWriter = new BufferedWriter(new FileWriter("searchOut.txt"));
             while (match.find()) {
-                System.out.println("Searched word '" + wordToFind + "' index: " + match.start() + "-" + (match.end()-1));
+                UserInterface.textAreaIndex.appendText("Searched word '" + wordToFind + "' index: " + match.start() + "-" + (match.end()-1) + "\n");
+                //System.out.println("Searched word '" + wordToFind + "' index: " + match.start() + "-" + (match.end()-1));
                 UserInterface.BuffWriter.write("Searched word '" + wordToFind + "' index: " + match.start() + "-" + (match.end()-1));
                 UserInterface.BuffWriter.newLine();
 

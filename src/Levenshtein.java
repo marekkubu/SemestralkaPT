@@ -36,12 +36,14 @@ public class Levenshtein {
         }
         if (array.size() < 10) {
             for (int i = 0; i <= array.size()-1; i++) {
-                System.out.println(array.get(i).toString());
+                UserInterface.textAreaWords.appendText(array.get(i).toString()+ "\n");
+                //System.out.println(array.get(i).toString());
             }
         }
         else {
             for (int i = 0; i < 10; i++) {
-                System.out.println(array.get(i).toString());
+                UserInterface.textAreaWords.appendText(array.get(i).toString()+ "\n");
+               //System.out.println(array.get(i).toString());
             }
         }
     }
