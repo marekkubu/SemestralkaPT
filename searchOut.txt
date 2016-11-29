@@ -1,2 +1,1 @@
-Searched word 'koko' index: 5-8
-Searched word 'koko' index: 28-31
+Searched word 'karel' index: 0-4

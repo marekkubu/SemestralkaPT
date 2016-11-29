@@ -39,7 +39,7 @@ public class UserInterface extends Application {
     private final int HEIGHT = 600;
     private final int LIST_MARGIN = 5;
     private final int LIST_PADDING = 2;
-    TextField searchTextField;
+    public static TextField searchTextField;
     int i = 3;
 
     Data data = new Data();
@@ -142,7 +142,7 @@ public class UserInterface extends Application {
 
         Button searchButton = new Button("Search");
 
-        TextField searchTextField = new TextField();
+        searchTextField = new TextField();
         searchTextField.setPromptText("Word for searching");
 
         searchButton.setOnAction(event -> {

@@ -97,12 +97,14 @@ public class Data {
 
 
         } catch (IOException e) {
+            System.out.println("Chyba");
         } finally {
             try {
                 if (UserInterface.BuffWriter != null) {
                     UserInterface.BuffWriter.close();
                 }
             } catch (IOException e) {
+                System.out.println("Chyba");
             }
         }
 

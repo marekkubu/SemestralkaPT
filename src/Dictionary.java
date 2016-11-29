@@ -23,12 +23,9 @@ public class Dictionary {
         words = s.split("[[ ]*|[,]*|[\\.]*|[:]*|[/]*|[!]*|[?]*|[+]*]+");
 
         treeSet.addAll(Arrays.asList(words));
-        System.out.println(treeSet);
-
         Trie.uploadDataToTrie();
-        Trie.vypis(Trie.root);
         Trie.komprimace(Trie.root);
-        Trie.vypis(Trie.root);
+        Levenshtein.vypis();
     }
 
     /**

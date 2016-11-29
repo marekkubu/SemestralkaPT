@@ -80,6 +80,10 @@ public class Trie {
         return pocet;
     }
 
+    /**
+     *
+     * @param root
+     */
     static void komprimace(Node root) {
         for (Node children : root.children) {
             if (children != null) {
