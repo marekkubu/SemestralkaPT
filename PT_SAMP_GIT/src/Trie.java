@@ -1,6 +1,4 @@
 
-import java.io.IOException;
-import java.lang.ref.Reference;
 
 /**
  * Created by Marek on 17. 11. 2016.
@@ -80,42 +78,39 @@ public class Trie {
         return pocet;
     }
 
+    /**
+     *
+     * @param root
+     */
     static void komprimace(Node root) {
-        for (int i = 0; i < root.children.length; i++) {
-            if (root.children[i] != null) {
-                Node child = root.children[i];
+        for (Node children : root.children) {
+            if (children != null) {
+                Node child = children;
                 if (child.children != null) {
-                    for (int j = 0; j < child.children.length; j++) {
+                    for (Node children1 : child.children) {
                         if (pocetPotomku(child) == 1 && child.isLeaf == false) {
-                            if (child.children[j] != null) {
-                                System.out.println(child.children[j].data +" aktualni pozice : leaf : " + child.children[j].isLeaf);
-                                if(child.children[j].data == null )
+                            if (children1 != null) {
+                                if (children1.data == null) {
                                     return;
-                                child.children[j].data = child.data.concat(child.children[j].data);
-                                child.isLeaf =  child.children[j].isLeaf;
+                                }
+                                children1.data = child.data.concat(children1.data);
+                                child.isLeaf = children1.isLeaf;
                                 child.data = null;
-                                System.out.println(child.children[j].data + " spojeny uzel");
                                 komprimace(child);
                             } else if (child.children != null && pocetPotomku(child) == 1 && child.isLeaf == true) {
-                                if (child.children[j] != null) {
-                                    System.out.println(child.children[j].data + " dalsi");
-                                    komprimace(child.children[j]);
+                                if (children1 != null) {
+                                    komprimace(children1);
                                 }
                             }
-                        } else if (pocetPotomku(child) > 1 ) {
-                            if (child.children[j] != null && child.children[j].isLeaf == false) {
-                                System.out.println(child.data + " vice potomku");
+                        } else if (pocetPotomku(child) > 1) {
+                            if (children1 != null && children1.isLeaf == false) {
                                 komprimace(child);
                             }
-
                         }
                     }
                 }
-
-            }//                       bear bell bid bull buy sell stock stop
-
+            } //                       bear bell bid bull buy sell stock stop
         }
-            return;
     }
 
     static boolean find(String data, Node root) {
@@ -141,51 +136,17 @@ public class Trie {
         }
     }
 
-
-    /* static boolean delete(String data, Node root) {
-        if (data == null || data.length() == 0) {
-            return false;
-        }
-        char x = data.charAt(0);
-        //note that first node ie root is just dummy, it just holds important
-        Node node = root.children[getIndex(x)];
-        if (node == null) {
-            return false;
-        } else {
-            if (data.length() == 1) {
-                node.isLeaf = false;
-                boolean allNull = true;
-                for (Node node1 : node.children) {
-                    allNull = allNull && node1 == null;
-                }
-                return allNull;
-            } else {
-                boolean delete = delete(data.substring(1, data.length()), node);
-                if (delete) {
-                    node.children[getIndex(x)] = null;
-                    if(node.isLeaf){
-                        return false;
-                    }
-                    boolean allNull = true;
-                    for (Node node1 : node.children) {
-                        allNull = allNull && node1 == null;
-                    }
-                    return allNull;                }
-            }
-        }
-        return false;
-    }*/
     private static List<String> strings = new ArrayList<>();
 
     public static List<String> getAll() {
-        strings = new ArrayList<String>();
+        strings = new ArrayList<>();
         findAllDFS(root, "");
         return strings;
     }
 
     private static void findAllDFS(Node node, String old) {
         if (node != null) {
-            if (node.data != "") {
+            if (!"".equals(node.data)) {
                 old = old + node.data;
             }
             if (node.isLeaf) {
@@ -196,5 +157,6 @@ public class Trie {
             }
         }
     }
+
 
 }
