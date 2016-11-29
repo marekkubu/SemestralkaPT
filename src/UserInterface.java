@@ -1,8 +1,9 @@
 
-import com.sun.javafx.scene.control.skin.VirtualFlow;
 import java.io.BufferedWriter;
-import java.io.FileWriter;
+import java.io.File;
 import java.io.IOException;
+import java.util.Optional;
+
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
@@ -13,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
@@ -31,15 +33,14 @@ public class UserInterface extends Application {
     public static ListView listView;
     public static TextArea textArea;
     public static BufferedWriter BuffWriter;
-    private FileWriter fileWriter;
-
-    private VirtualFlow flow;
+    public  static TextArea textAreaWords;
+    public  static TextArea textAreaIndex;
 
     private final int WIDTH = 800;
     private final int HEIGHT = 600;
     private final int LIST_MARGIN = 5;
     private final int LIST_PADDING = 2;
-    TextField searchTextField;
+    public static TextField searchTextField;
     int i = 3;
 
     Data data = new Data();
@@ -78,6 +79,9 @@ public class UserInterface extends Application {
         BorderPane.setMargin(listView, new Insets(LIST_MARGIN, LIST_MARGIN, LIST_MARGIN, LIST_MARGIN / 2));
         borderPane.setBottom(dictionaryControl());
 
+        File file = new File("Dictionary.txt");
+        Data.uploadMyFile(file);
+
         return borderPane;
 
     }
@@ -85,7 +89,6 @@ public class UserInterface extends Application {
     private Node dictionaryControl() throws IOException {
 
         HBox butts = new HBox();
-        BuffWriter = new BufferedWriter(new FileWriter("Dictionary.txt"));
         listView.setCellFactory(TextFieldListCell.forListView());
         listView.setEditable(true);
 
@@ -104,8 +107,12 @@ public class UserInterface extends Application {
         });
 
         addButton.setPrefWidth(60);
-        Button deleteButton = new Button("Delete");
+        Button deleteButton = new Button("Refresh");
         deleteButton.setPrefWidth(60);
+
+        deleteButton.setOnAction(event -> {dictionary.createArray();
+        Dictionary.nonDuplicatedArrayString();
+        });
 
         butts.getChildren().addAll(openButton, saveButton, addButton, deleteButton);
         butts.setPadding(new Insets(3));
@@ -120,14 +127,14 @@ public class UserInterface extends Application {
         textArea = new TextArea();
         textArea.setWrapText(true);
         textArea.setPromptText("Write or upload your text.");
-        textArea.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+        /*textArea.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
             if (newValue) {
 
             } else {
                 dictionary.createArray();
                 Dictionary.nonDuplicatedArrayString();
             }
-        });
+        });*/
         BorderPane.setMargin(textArea, new Insets(LIST_MARGIN, LIST_MARGIN / 2, LIST_MARGIN, LIST_MARGIN));
         borderPane.setCenter(textArea);
         borderPane.setBottom(textAreaControl());
@@ -142,7 +149,7 @@ public class UserInterface extends Application {
 
         Button searchButton = new Button("Search");
 
-        TextField searchTextField = new TextField();
+        searchTextField = new TextField();
         searchTextField.setPromptText("Word for searching");
 
         searchButton.setOnAction(event -> {
@@ -154,8 +161,59 @@ public class UserInterface extends Application {
                 alert.showAndWait();
 
             } else {
-                System.out.println(Trie.find(searchTextField.getText().toLowerCase(), Trie.root));
-                search.indexSearching(searchTextField.getText().toLowerCase());
+                if (Trie.find(searchTextField.getText().toLowerCase(), Trie.root) == false) {
+                    //System.out.println("Chcete pridat slovo do slovniku?");
+                    Label labelWords = new Label("10 WORDS");
+                    textAreaWords = new TextArea();
+                    textAreaWords.setEditable(false);
+                    textAreaWords.setPromptText("Any similar words...");
+                    Levenshtein.bubbleSort();
+                    //textAreaWords.setText(Levenshtein.bubbleSort());
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setHeaderText("Search word is not in your dictionary!");
+                    alert.setContentText("Do you want Add this word: " + searchTextField.getText().toLowerCase() +"?");
+                    alert.setTitle("Search word");
+
+                    ButtonType buttonAdd = new ButtonType("Add");
+                    ButtonType buttonCancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+                    alert.getButtonTypes().setAll(buttonAdd, buttonCancel);
+                    GridPane expContent = new GridPane();
+                    expContent.setMaxWidth(Double.MAX_VALUE);
+                    expContent.add(labelWords,0,0);
+                    expContent.add(textAreaWords,0,1);
+
+                    alert.getDialogPane().setExpandableContent(expContent);
+
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if (result.get() == buttonAdd) {
+                        Dictionary.treeSet.add(searchTextField.getText().toLowerCase());
+                        Trie.uploadDataToTrie();
+                        Dictionary.nonDuplicatedArrayString();
+                        // ... user chose "Add"
+                    } else {
+                        // ... user chose CANCEL or closed the dialog
+                    }
+                   // Levenshtein.bubbleSort();
+                }
+                else {
+                    textAreaIndex=new TextArea();
+                    textAreaIndex.setPromptText("Searching word is not in you text!");
+                    textAreaIndex.setEditable(false);
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setHeaderText("Search word was founded!");
+                    alert.setContentText("The founded word: '" + searchTextField.getText().toLowerCase() +"' is in you dictionary.");
+                    alert.setTitle("Search word");
+
+                    GridPane gridPane = new GridPane();
+                    gridPane.setMaxWidth(Double.MAX_VALUE);
+                    gridPane.add(textAreaIndex,0,0);
+                    search.indexSearching(searchTextField.getText().toLowerCase());
+                    alert.getDialogPane().setExpandableContent(gridPane);
+                    alert.showAndWait();
+                    //System.out.println("Hledane slovo "+searchTextField.getText().toLowerCase()+" se nachazi ve slovniku.");
+
+                }
             }
         });
         HBox.setMargin(searchButton, new Insets(5));

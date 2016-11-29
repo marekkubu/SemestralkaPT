@@ -1,3 +1,1 @@
-Searched word 'as' index: 0-1
-Searched word 'as' index: 5-6
-Searched word 'as' index: 8-9
+Searched word 'ahoj' index: 0-3
