@@ -1,3 +1,4 @@
+
 import java.io.IOException;
 import java.lang.ref.Reference;
 
@@ -16,6 +17,7 @@ public class Trie {
     }
 
     static class Node {
+
         String data;
         boolean isLeaf;
         Node[] children;
@@ -34,33 +36,31 @@ public class Trie {
         }
         Node child = root.children[getIndex(data.charAt(0))];
         if (child == null) {
-            Node node = new Node(data.substring(0,1), data.length() == 1);
+            Node node = new Node(data.substring(0, 1), data.length() == 1);
             root.children[getIndex(data.charAt(0))] = node;
 
             if (data.length() > 1) {
                 insert(data.substring(1, data.length()), node);
 
             }
+        } else if (data.length() == 1) {
+            child.isLeaf = true;
         } else {
-            if (data.length() == 1) {
-                child.isLeaf = true;
-            } else {
-                //child.isLeaf = false;
-                insert(data.substring(1, data.length()), child);
-            }
+            //child.isLeaf = false;
+            insert(data.substring(1, data.length()), child);
         }
     }
 
-    static void vypis(Node root){
+    static void vypis(Node root) {
         for (int i = 0; i < root.children.length; i++) {
-            if (root.children[i]!= null) {
+            if (root.children[i] != null) {
                 if (root.children[i].isLeaf == true) {
-                System.out.println(root.children[i].data + " is Leaf" + " i="+i);
+                    System.out.println(root.children[i].data + " is Leaf" + " i=" + i);
                 }
             }
 
-            Node child=root.children[i];
-            if (root.children[i]!= null) {
+            Node child = root.children[i];
+            if (root.children[i] != null) {
                 //System.out.println(child.data);
                 if (child.children != null) {
                     vypis(child);
@@ -69,68 +69,46 @@ public class Trie {
         }
 
     }
-    public static int pocetPotomku(Node root){
-        int pocet =0;
+
+    public static int pocetPotomku(Node root) {
+        int pocet = 0;
         for (int i = 0; i < root.children.length; i++) {
             if (root.children[i] != null) {
-                pocet ++;
+                pocet++;
             }
         }
         return pocet;
     }
 
-
     static void komprimace(Node root) {
-
-           /* for (int i = 0; i < root.children.length; i++) {
-                if (root.children[i] != null) {
-                    if (root.children[i].isLeaf == false) {
-                        komprimace(root.children[i]);
-                    }
-                    if (root.children[i] != null && root.children[i].isLeaf == true && pocetPotomku(root) == 1 && root.data.length() == 1) {
-                        root.data = root.data.concat(root.children[i].data);
-                        System.out.println(root.data + " - kontrola");
-                        root.children[i] = null;
-                        root.isLeaf = true;
-                        System.out.println(root.parent.data + " parent");
-                        if (root.children != null && root.parent.data != null) {
-                            komprimace(root);
-                        }
-                    }
-                }
-            }*/
-        for (int i = 0; i < root.children.length; i++) {
-            if (root.children[i] != null) {
-                Node child= root.children[i];
+        for (Node children : root.children) {
+            if (children != null) {
+                Node child = children;
                 if (child.children != null) {
-                    for (int j = 0; j < child.children.length; j++) {
-                        if (pocetPotomku(child)==1 && child.isLeaf==false) {
-                            if (child.children[j] != null) {
-                                //System.out.println(child.children[j].data +" aktualni pozice");
-                                child.children[j].data = child.data.concat(child.children[j].data);
+                    for (Node children1 : child.children) {
+                        if (pocetPotomku(child) == 1 && child.isLeaf == false) {
+                            if (children1 != null) {
+                                if (children1.data == null) {
+                                    return;
+                                }
+                                children1.data = child.data.concat(children1.data);
+                                child.isLeaf = children1.isLeaf;
                                 child.data = null;
-                                System.out.println(child.children[j].data +" spojeny uzel");
                                 komprimace(child);
                             } else if (child.children != null && pocetPotomku(child) == 1 && child.isLeaf == true) {
-                                if (child.children[j] != null) {
-                                    System.out.println(child.children[j].data + " dalsi");
-                                    komprimace(child.children[j]);
+                                if (children1 != null) {
+                                    komprimace(children1);
                                 }
                             }
-                        }
-                        else if (pocetPotomku(child)>1) {
-                            if (child.children[j] != null && child.children[j].isLeaf==false) {
-                                System.out.println(child.data + " vice potomku");
+                        } else if (pocetPotomku(child) > 1) {
+                            if (children1 != null && children1.isLeaf == false) {
                                 komprimace(child);
                             }
                         }
-
                     }
                 }
-            }
-
+            } //                       bear bell bid bull buy sell stock stop
         }
-
     }
 
     static boolean find(String data, Node root) {
@@ -142,16 +120,14 @@ public class Trie {
         Node node = root.children[getIndex(x)];
         if (node == null) {
             return false;
+        } else if (data.length() == 1) {
+            return node.isLeaf;
         } else {
-            if (data.length() == 1) {
-                return node.isLeaf;
-            } else {
-                return find(data.substring(1, data.length()), node);
-            }
+            return find(data.substring(1, data.length()), node);
         }
     }
 
-    public static void uploadDataToTrie(){
+    public static void uploadDataToTrie() {
 
         for (int i = 0; i < Dictionary.treeSet.size(); i++) {
             Trie.insert(Dictionary.treeSet.toArray()[i].toString(), Trie.root);
@@ -159,7 +135,7 @@ public class Trie {
     }
 
 
-   /* static boolean delete(String data, Node root) {
+    /* static boolean delete(String data, Node root) {
         if (data == null || data.length() == 0) {
             return false;
         }
@@ -192,8 +168,6 @@ public class Trie {
         }
         return false;
     }*/
-
-
     private static List<String> strings = new ArrayList<>();
 
     public static List<String> getAll() {
