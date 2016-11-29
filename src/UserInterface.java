@@ -1,7 +1,6 @@
 
-import com.sun.javafx.scene.control.skin.VirtualFlow;
 import java.io.BufferedWriter;
-import java.io.FileWriter;
+import java.io.File;
 import java.io.IOException;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -31,9 +30,6 @@ public class UserInterface extends Application {
     public static ListView listView;
     public static TextArea textArea;
     public static BufferedWriter BuffWriter;
-    private FileWriter fileWriter;
-
-    private VirtualFlow flow;
 
     private final int WIDTH = 800;
     private final int HEIGHT = 600;
@@ -78,6 +74,9 @@ public class UserInterface extends Application {
         BorderPane.setMargin(listView, new Insets(LIST_MARGIN, LIST_MARGIN, LIST_MARGIN, LIST_MARGIN / 2));
         borderPane.setBottom(dictionaryControl());
 
+        File file = new File("Dictionary.txt");
+        Data.uploadMyFile(file);
+
         return borderPane;
 
     }
@@ -85,7 +84,6 @@ public class UserInterface extends Application {
     private Node dictionaryControl() throws IOException {
 
         HBox butts = new HBox();
-        BuffWriter = new BufferedWriter(new FileWriter("Dictionary.txt"));
         listView.setCellFactory(TextFieldListCell.forListView());
         listView.setEditable(true);
 
@@ -104,8 +102,12 @@ public class UserInterface extends Application {
         });
 
         addButton.setPrefWidth(60);
-        Button deleteButton = new Button("Delete");
+        Button deleteButton = new Button("Refresh");
         deleteButton.setPrefWidth(60);
+
+        deleteButton.setOnAction(event -> {dictionary.createArray();
+        Dictionary.nonDuplicatedArrayString();
+        });
 
         butts.getChildren().addAll(openButton, saveButton, addButton, deleteButton);
         butts.setPadding(new Insets(3));
@@ -120,14 +122,14 @@ public class UserInterface extends Application {
         textArea = new TextArea();
         textArea.setWrapText(true);
         textArea.setPromptText("Write or upload your text.");
-        textArea.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+        /*textArea.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
             if (newValue) {
 
             } else {
                 dictionary.createArray();
                 Dictionary.nonDuplicatedArrayString();
             }
-        });
+        });*/
         BorderPane.setMargin(textArea, new Insets(LIST_MARGIN, LIST_MARGIN / 2, LIST_MARGIN, LIST_MARGIN));
         borderPane.setCenter(textArea);
         borderPane.setBottom(textAreaControl());
@@ -154,8 +156,14 @@ public class UserInterface extends Application {
                 alert.showAndWait();
 
             } else {
-                System.out.println(Trie.find(searchTextField.getText().toLowerCase(), Trie.root));
-                search.indexSearching(searchTextField.getText().toLowerCase());
+                if (Trie.find(searchTextField.getText().toLowerCase(), Trie.root) == false) {
+                    System.out.println("Chcete pridat slovo do slovniku?");
+                    Levenshtein.bubbleSort();
+                }
+                else {
+                    System.out.println("Hledane slovo "+searchTextField.getText().toLowerCase()+" se nachazi ve slovniku.");
+                    search.indexSearching(searchTextField.getText().toLowerCase());
+                }
             }
         });
         HBox.setMargin(searchButton, new Insets(5));

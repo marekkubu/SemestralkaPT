@@ -138,40 +138,6 @@ public class Trie {
         }
     }
 
-
-    /* static boolean delete(String data, Node root) {
-        if (data == null || data.length() == 0) {
-            return false;
-        }
-        char x = data.charAt(0);
-        //note that first node ie root is just dummy, it just holds important
-        Node node = root.children[getIndex(x)];
-        if (node == null) {
-            return false;
-        } else {
-            if (data.length() == 1) {
-                node.isLeaf = false;
-                boolean allNull = true;
-                for (Node node1 : node.children) {
-                    allNull = allNull && node1 == null;
-                }
-                return allNull;
-            } else {
-                boolean delete = delete(data.substring(1, data.length()), node);
-                if (delete) {
-                    node.children[getIndex(x)] = null;
-                    if(node.isLeaf){
-                        return false;
-                    }
-                    boolean allNull = true;
-                    for (Node node1 : node.children) {
-                        allNull = allNull && node1 == null;
-                    }
-                    return allNull;                }
-            }
-        }
-        return false;
-    }*/
     private static List<String> strings = new ArrayList<>();
 
     public static List<String> getAll() {
@@ -193,5 +159,6 @@ public class Trie {
             }
         }
     }
+
 
 }

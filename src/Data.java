@@ -14,22 +14,27 @@ public class Data {
      * uploadDictionary()
      * metoda, která otevře soubor.txt a načte z něj data do metody uploadFile()
      */
-    public void uploadDictionary() {
+    public  void uploadDictionary() {
         FileChooser fileChooser = new FileChooser();
         File file = fileChooser.showOpenDialog(UserInterface.primaryStage);
+        uploadMyFile(file);
+
+    }
+    public static void uploadMyFile(File file){
         if (file != null) {
             ObservableList<String> data = uploadFile(file);
             if ((data != null) && (data.size() > 0)) {
                 UserInterface.listView.setItems(data);
+                Dictionary.treeSet.addAll(data);
+                Trie.uploadDataToTrie();
             } else {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setContentText("Nepodarilo se nacist zadna data ze souboru!");
+                alert.setContentText("Click OK and continue");
                 alert.setTitle("Loading error");
-                alert.setHeaderText("Chyba souboru!");
+                alert.setHeaderText("Dictionary.txt not found!");
                 alert.showAndWait();
             }
         }
-
     }
 
     /**
@@ -60,7 +65,7 @@ public class Data {
      * @param file
      * @return
      */
-    public ObservableList<String> uploadFile(File file) {
+    public static ObservableList<String> uploadFile(File file) {
         ObservableList<String> str = FXCollections.observableArrayList();
         try (BufferedReader in = new BufferedReader(
                 new InputStreamReader(
@@ -86,28 +91,24 @@ public class Data {
      * Metoda, která uloží obsah slovníku do Dictionary.txt.
      */
     public void saveDictionary(){
+        Dictionary dictionary = new Dictionary();
+
         try {
-            File f = new File("Dictionary.txt");
-            f.createNewFile();
-            try (FileWriter fr = new FileWriter(f)) {
-                for (String s: Dictionary.treeSet) {
-                    fr.write(s+"\r\n");
-                }
+           // dictionary.createArray();
+            UserInterface.BuffWriter = new BufferedWriter(new FileWriter("Dictionary.txt"));
+            for (String s : dictionary.treeSet) {
+                UserInterface.BuffWriter.write(s);
+                UserInterface.BuffWriter.newLine();
             }
 
-
         } catch (IOException e) {
-            System.out.println("Chyba");
         } finally {
             try {
                 if (UserInterface.BuffWriter != null) {
                     UserInterface.BuffWriter.close();
                 }
             } catch (IOException e) {
-                System.out.println("Chyba");
             }
         }
-
     }
-
 }

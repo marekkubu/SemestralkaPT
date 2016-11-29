@@ -2,6 +2,7 @@
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.io.File;
 import java.util.*;
 
 /**
@@ -25,7 +26,6 @@ public class Dictionary {
         treeSet.addAll(Arrays.asList(words));
         Trie.uploadDataToTrie();
         Trie.komprimace(Trie.root);
-        Levenshtein.vypis();
     }
 
     /**

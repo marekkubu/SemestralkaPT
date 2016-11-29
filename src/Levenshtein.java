@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Marek on 29. 11. 2016.
  */
@@ -13,8 +16,33 @@ public class Levenshtein {
                 (levenshteinDistance(s.substring(1), t.substring(1)) + (s.charAt(0)!=t.charAt(0) ? 1:0))) ;
     }
     public static void vypis(){
+       /* String searchWord = UserInterface.searchTextField.getText().toLowerCase().toString();
         for(String w : Dictionary.treeSet){
-            System.out.println("Slovo2: "+ w + " - "+Levenshtein.levenshteinDistance(w,UserInterface.searchTextField.getText().toLowerCase().toString()));
+            System.out.println("Slovo: "+ w + " - "+Levenshtein.levenshteinDistance(w,searchWord));
+        }*/
+
+    }
+    public static void bubbleSort(){
+        ArrayList<String> array = new ArrayList<>(Dictionary.treeSet);
+        String searchWord = UserInterface.searchTextField.getText().toLowerCase().toString();
+        for (int i = 0; i < array.size() - 1; i++) {
+            for (int j = 0; j < array.size() - i - 1; j++) {
+                if(Levenshtein.levenshteinDistance(array.get(j),searchWord) > Levenshtein.levenshteinDistance(array.get(j+1),searchWord)){
+                    String tmp = array.get(j);
+                    array.set(j,array.get(j+1));
+                    array.set(j+1,tmp);
+                }
+            }
+        }
+        if (array.size() < 10) {
+            for (int i = 0; i <= array.size()-1; i++) {
+                System.out.println(array.get(i).toString());
+            }
+        }
+        else {
+            for (int i = 0; i < 10; i++) {
+                System.out.println(array.get(i).toString());
+            }
         }
     }
 }
