@@ -1,3 +1,4 @@
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import java.util.*;
@@ -12,10 +13,10 @@ public class Dictionary {
     static ObservableList<String> list = FXCollections.observableArrayList();
 
     /**
-     * createArray()
-     * Pomocí této metody odstraníme z textu nežádoucí znaky a načteme do datového formátu TreeSet
+     * createTreeSet() Pomocí této metody odstraníme z textu nežádoucí znaky a
+     * načteme do datového formátu TreeSet
      */
-    public void createArray() {
+    public void createTreeSet() {
         String s = UserInterface.textArea.getText().toLowerCase();
         s = s.replaceAll("[^a-zěščřžýáíéůú]", " ");
         words = s.split("[[ ]*|[,]*|[\\.]*|[:]*|[/]*|[!]*|[?]*|[+]*]+");
@@ -28,11 +29,12 @@ public class Dictionary {
     /**
      * Vytvoří pole unikátních slov, ze kterých se vytvoří slovník.
      */
-    public static void nonDuplicatedArrayString() {
-         list.clear();
-         Dictionary.treeSet.stream().forEach((s) -> {
-             list.add(s);
-        });
+    public static void nonDuplicatedFilledList() {
+        list.clear();
+        Dictionary.treeSet.stream().forEach((s) -> {
+            if(!s.equals(""))
+            list.add(s);
+        });     
         UserInterface.listView.setItems(list);
     }
 }

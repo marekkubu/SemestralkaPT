@@ -1,5 +1,4 @@
 
-
 /**
  * Created by Marek on 17. 11. 2016.
  */
@@ -51,14 +50,14 @@ public class Trie {
 
     static void vypis(Node root) {
         for (int i = 0; i < root.children.length; i++) {
-            if (root.children[i] != null && root.children[i].isLeaf == true) { 
-                    System.out.println(root.children[i].data + " is Leaf" + " i=" + i);
+            if (root.children[i] != null && root.children[i].isLeaf) {
+                System.out.println(root.children[i].data + " is Leaf" + " i=" + i);
             }
 
             Node child = root.children[i];
             if (root.children[i] != null && child.children != null) {
                 //System.out.println(child.data);
-                    vypis(child);   
+                vypis(child);
             }
         }
 
@@ -84,7 +83,7 @@ public class Trie {
                 Node child = children;
                 if (child.children != null) {
                     for (Node children1 : child.children) {
-                        if (pocetPotomku(child) == 1 && child.isLeaf == false) {
+                        if (pocetPotomku(child) == 1 && !child.isLeaf) {
                             if (children1 != null) {
                                 if (children1.data == null) {
                                     return;
@@ -93,13 +92,13 @@ public class Trie {
                                 child.isLeaf = children1.isLeaf;
                                 child.data = null;
                                 komprimace(child);
-                            } else if (child.children != null && pocetPotomku(child) == 1 
-                                    && child.isLeaf == true &&children1 != null) {
-                                    komprimace(children1);
+                            } else if (child.children != null && pocetPotomku(child) == 1
+                                    && child.isLeaf && children1 != null) {
+                                komprimace(children1);
                             }
-                        } else if (pocetPotomku(child) > 1 && children1 != null 
-                                && children1.isLeaf == false) {
-                               komprimace(child);
+                        } else if (pocetPotomku(child) > 1 && children1 != null
+                                && !children1.isLeaf) {
+                            komprimace(child);
                         }
                     }
                 }
@@ -152,6 +151,5 @@ public class Trie {
             }
         }
     }
-
 
 }

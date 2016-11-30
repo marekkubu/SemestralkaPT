@@ -23,7 +23,7 @@ public class Search {
         Pattern word = Pattern.compile(wordToFind);
         Matcher match = word.matcher(str);
 
-        dictionary.createArray();
+        dictionary.createTreeSet();
         UserInterface.BuffWriter = new BufferedWriter(new FileWriter("searchOut.txt"));
         while (match.find()) {
             UserInterface.textAreaIndex.appendText("Searched word '" + wordToFind + "' index: " + match.start() + "-" + (match.end() - 1) + "\n");

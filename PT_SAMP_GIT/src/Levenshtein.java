@@ -1,10 +1,12 @@
 
-import java.util.ArrayList;
+import java.util.Comparator;
 
 /**
  * Created by Marek on 29. 11. 2016.
  */
-public class Levenshtein {
+public class Levenshtein implements Comparator<String> {
+
+    String searchWord;
 
     static int levenshteinDistance(final String s, final String t) {
 
@@ -20,6 +22,10 @@ public class Levenshtein {
                 (levenshteinDistance(s.substring(1), t.substring(1)) + (s.charAt(0) != t.charAt(0) ? 1 : 0)));
     }
 
+    public Levenshtein() {
+        this.searchWord = UserInterface.searchTextField.getText().toLowerCase();
+    }
+
     public static void vypis() {
         /* String searchWord = UserInterface.searchTextField.getText().toLowerCase().toString();
         for(String w : Dictionary.treeSet){
@@ -28,28 +34,9 @@ public class Levenshtein {
 
     }
 
-    public static void bubbleSort() {
-        ArrayList<String> array = new ArrayList<>(Dictionary.treeSet);
-        String searchWord = UserInterface.searchTextField.getText().toLowerCase();
-        for (int i = 0; i < array.size() - 1; i++) {
-            for (int j = 0; j < array.size() - i - 1; j++) {
-                if (Levenshtein.levenshteinDistance(array.get(j), searchWord) > Levenshtein.levenshteinDistance(array.get(j + 1), searchWord)) {
-                    String tmp = array.get(j);
-                    array.set(j, array.get(j + 1));
-                    array.set(j + 1, tmp);
-                }
-            }
-        }
-        if (array.size() < 10) {
-            for (int i = 0; i <= array.size() - 1; i++) {
-                UserInterface.textAreaWords.appendText(array.get(i) + "\n");
-                //System.out.println(array.get(i).toString());
-            }
-        } else {
-            for (int i = 0; i < 10; i++) {
-                UserInterface.textAreaWords.appendText(array.get(i) + "\n");
-                //System.out.println(array.get(i).toString());
-            }
-        }
+    @Override
+    public int compare(String first, String second) {
+        return (levenshteinDistance(first, searchWord) - levenshteinDistance(second, searchWord));
     }
+
 }
