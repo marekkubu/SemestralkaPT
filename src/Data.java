@@ -2,6 +2,7 @@
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Dialog;
 import javafx.stage.FileChooser;
 
 import java.io.*;
@@ -10,17 +11,19 @@ import java.io.*;
  * Created by Marek on 14. 10. 2016.
  */
 public class Data {
+
     /**
-     * uploadDictionary()
-     * metoda, která otevře soubor.txt a načte z něj data do metody uploadFile()
+     * uploadDictionary() metoda, která otevře soubor.txt a načte z něj data do
+     * metody uploadFile()
      */
-    public  void uploadDictionary() {
+    public void uploadDictionary() {
         FileChooser fileChooser = new FileChooser();
         File file = fileChooser.showOpenDialog(UserInterface.primaryStage);
         uploadMyFile(file);
 
     }
-    public static void uploadMyFile(File file){
+
+    public static void uploadMyFile(File file) {
         if (file != null) {
             ObservableList<String> data = uploadFile(file);
             if ((data != null) && (data.size() > 0)) {
@@ -38,9 +41,9 @@ public class Data {
     }
 
     /**
-     * Metoda otevře dialogové okno, pro pro načtení textového souboru do textArea.
+     * Metoda otevře dialogové okno, pro pro načtení textového souboru do
+     * textArea.
      */
-
     public void uploadText() {
         FileChooser fileChooser = new FileChooser();
         File file = fileChooser.showOpenDialog(UserInterface.primaryStage);
@@ -60,8 +63,9 @@ public class Data {
     }
 
     /**
-     * uploadFile()
-     * Metoda vytvoří pole, do kterého po řádcích nahraje vstupní data.
+     * uploadFile() Metoda vytvoří pole, do kterého po řádcích nahraje vstupní
+     * data.
+     *
      * @param file
      * @return
      */
@@ -74,6 +78,7 @@ public class Data {
             String line;
 
             while ((line = in.readLine()) != null) {
+                if(!line.equals(""))
                 str.add(line);
             }
 
@@ -89,26 +94,31 @@ public class Data {
 
     /**
      * Metoda, která uloží obsah slovníku do Dictionary.txt.
+     *
+     * @throws java.io.IOException
      */
-    public void saveDictionary(){
-        Dictionary dictionary = new Dictionary();
-
+    public void saveDictionary() throws IOException {
         try {
-           // dictionary.createArray();
             UserInterface.BuffWriter = new BufferedWriter(new FileWriter("Dictionary.txt"));
-            for (String s : dictionary.treeSet) {
+            for (String s : Dictionary.treeSet) {
                 UserInterface.BuffWriter.write(s);
                 UserInterface.BuffWriter.newLine();
             }
-
-        } catch (IOException e) {
-        } finally {
-            try {
-                if (UserInterface.BuffWriter != null) {
-                    UserInterface.BuffWriter.close();
-                }
-            } catch (IOException e) {
+            if (UserInterface.BuffWriter != null) {
+                UserInterface.BuffWriter.close();
             }
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Save completed");
+            alert.setContentText("Distionary was save");
+            alert.showAndWait();
+
+        }catch (Exception e){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Error");
+            alert.setContentText("Distionary was not save");
+            alert.showAndWait();
+
         }
+
     }
 }
