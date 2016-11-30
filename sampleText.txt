@@ -1,0 +1,21 @@
+A method in object-oriented programming (OOP) is a procedure associated with a message and an object. 
+An object is made up of data and behavior, which form the interface that an object presents to the outside world. 
+Data is represented as properties of the object and behavior as methods. 
+For example, a Window object would have methods such as open and close, while its state (whether it is opened or closed) would be a property.
+
+java java java java
+
+In class-based programming, 
+methods are defined in a class, and objects are instances of a given class. 
+One of the most important capabilities that a method provides is method overriding. 
+The same name (e.g., area) can be used for multiple different kinds of classes. 
+This allows the sending objects to invoke behaviors and to delegate the implementation of those behaviors to the receiving object. 
+Method in Java programming sets the behaviour of class object. 
+For example, an object can send an area message to another object 
+and the appropriate formula is invoked whether the receiving object is a rectangle, circle, triangle, etc.
+
+oop ,.-?:_.-.,.-.Aaaisa
+
+Methods also provide the interface that other classes use to access and modify the data properties of an object. 
+This is known as encapsulation. 
+Encapsulation and overriding are the two primary distinguishing features between methods and procedure calls.[1]
