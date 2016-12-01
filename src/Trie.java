@@ -123,15 +123,6 @@ public class Trie {
             child.data=child.data.concat(child.children[indexPotomka].data);
             child.isLeaf=child.children[indexPotomka].isLeaf;
             child.children=child.children[indexPotomka].children;
-            //System.out.println(child.data +" kontrola");
-            //System.out.println(root.children[0].data + " child.data");
-
-           /* child.children[indexPotomka].data=child.data.concat(child.children[indexPotomka].data);
-            child.data="";
-            child=child.children[indexPotomka];
-            System.out.println(child.data +" kontrola");
-            System.out.println(root.children[0].data + " child.data");*/
-
             linkNode(child);
 
         }
@@ -143,57 +134,31 @@ public class Trie {
         }
     }
 
-    /*static boolean find(String data, Node root) {
-        if (data == null || data.length() == 0) {
-            return true;
-        }
-        char x = data.charAt(0);
-        Node node = root.children[getIndex(x)];
-        if (node == null) {
-            return false;
-        } else if (data.length() == 1) {
-            return node.isLeaf;
-        } else {
-            return find(data.substring(1, data.length()), node);
-        }
-    }*/
   static boolean find (String data, Node root){
-    /*  if (data == null) {
-          return true;
-      }*/
-      Node node;
 
+      Node node;
       char x = data.charAt(0);
-      System.out.println("Data: "+data);
-      System.out.println("Char: "+x);
 
       if(root.children[getIndex(x)] == null){
-                System.out.println("neexistuje");
-                return false;
+          return false;
       }
-
       else{
             node = root.children[getIndex(x)];
             System.out.println(root.children[getIndex(x)].data +" index");
 
             for (int i = 1; i < data.length()+1; i++) {
                 String s = data.substring(0,i);
-                System.out.println(s + " subS");
                 if (node.data.equals(s) && node.isLeaf && data.length()== node.data.length()){
-                    System.out.println("Shoda");
                     return true;
                 }
 
-
-               else if (node.data.equals(s) && node.isLeaf && pocetPotomku(node) >1 ) {
-                    System.out.println(data.substring(i) + " hledame1");
+               else if (node.data.equals(s) && node.isLeaf && pocetPotomku(node) >1 || node.data.equals(s) && pocetPotomku(node) >=1) {
                     return find(data.substring(i),node);
                 }
 
-                else if (node.data.equals(s) && pocetPotomku(node) >=1) {
-                    System.out.println(data.substring(i) + " hledame2");
+                /*else if (node.data.equals(s) && pocetPotomku(node) >=1) {
                     return find(data.substring(i),node);
-                }
+                }*/
             }
             return false;
         }
