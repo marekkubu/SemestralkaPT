@@ -7,7 +7,11 @@ import java.util.List;
 
 public class Trie {
 
-    public static Node root = new Node(null, false);
+    public static Node root;
+
+
+
+
     public static int indexPotomka =0;
 
     static int getIndex(char x) {
@@ -62,7 +66,7 @@ public class Trie {
 
     }
 
-    public static int pocetPotomku(Node root) {
+    static int pocetPotomku(Node root) {
         int pocet = 0;
         for (int i = 0; i < root.children.length; i++) {
             if (root.children[i] != null) {
@@ -105,23 +109,22 @@ public class Trie {
             } //                       bear bell bid bull buy sell stock stop
         }
     }*/
-    public static void komprimace(Node root){
-        for (int i = 0; i < root.children.length; i++) {
-            if (root.children[i] != null) {
-               // System.out.println(root.children[0].data);
-                linkNode(root.children[i]);
-
+    static void komprimace(Node root){
+        for (Node children : root.children) {
+            if (children != null) {
+                // System.out.println(root.children[0].data);
+                linkNode(children);
             }
         }
 
     }
-    public static void linkNode(Node child ){
+    static void linkNode(Node child ){
         if (child != null && !child.isLeaf && pocetPotomku(child)==1) {
             child.data=child.data.concat(child.children[indexPotomka].data);
             child.isLeaf=child.children[indexPotomka].isLeaf;
             child.children=child.children[indexPotomka].children;
-            System.out.println(child.data +" kontrola");
-            System.out.println(root.children[0].data + " child.data");
+            //System.out.println(child.data +" kontrola");
+            //System.out.println(root.children[0].data + " child.data");
 
            /* child.children[indexPotomka].data=child.data.concat(child.children[indexPotomka].data);
             child.data="";
@@ -138,7 +141,6 @@ public class Trie {
         else if (pocetPotomku(child)>1){
             komprimace(child);
         }
-        return;
     }
 
     /*static boolean find(String data, Node root) {
@@ -155,38 +157,54 @@ public class Trie {
             return find(data.substring(1, data.length()), node);
         }
     }*/
-    static boolean find (String data, Node root){
-        if (data == null || data.length() == 0) {
-            return true;
-        }
-        char x = data.charAt(0);
-        Node node = root.children[getIndex(x)];
-       // System.out.println(node.data + " - kontrola");
+  static boolean find (String data, Node root){
+    /*  if (data == null) {
+          return true;
+      }*/
+      Node node;
 
-        for (int i = 1; i < data.length()+1; i++) {
-            String s = data.substring(0,i);
-            System.out.println(s);
-            if (node.data.equals(s) && node.isLeaf && data.length()==node.data.length()){
-                System.out.println("Shoda");
-                return true;
-            }
-            else if (node.data.equals(s) && node.isLeaf) {
-                System.out.println(data.substring(i) + " hledame");
-                find(data.substring(i),node);
-            }
-            else {
+      char x = data.charAt(0);
+      System.out.println("Data: "+data);
+      System.out.println("Char: "+x);
+
+      if(root.children[getIndex(x)] == null){
+                System.out.println("neexistuje");
                 return false;
+      }
+
+      else{
+            node = root.children[getIndex(x)];
+            System.out.println(root.children[getIndex(x)].data +" index");
+
+            for (int i = 1; i < data.length()+1; i++) {
+                String s = data.substring(0,i);
+                System.out.println(s + " subS");
+                if (node.data.equals(s) && node.isLeaf && data.length()== node.data.length()){
+                    System.out.println("Shoda");
+                    return true;
+                }
+
+
+               else if (node.data.equals(s) && node.isLeaf && pocetPotomku(node) >1 ) {
+                    System.out.println(data.substring(i) + " hledame1");
+                    return find(data.substring(i),node);
+                }
+
+                else if (node.data.equals(s) && pocetPotomku(node) >=1) {
+                    System.out.println(data.substring(i) + " hledame2");
+                    return find(data.substring(i),node);
+                }
             }
+            return false;
         }
-        return node.isLeaf;
     }
 
-    public static void uploadDataToTrie() {
 
+    public static void uploadDataToTrie() {
+        root = new Node(null, false);
         for (int i = 0; i < Dictionary.treeSet.size(); i++) {
             Trie.insert(Dictionary.treeSet.toArray()[i].toString(), Trie.root);
         }
-
         komprimace(root);
         System.out.println(Trie.getAll().toString());
     }
