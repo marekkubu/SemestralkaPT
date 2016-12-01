@@ -22,18 +22,41 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
-
 /**
- * Created by Marek Kubů and Tomáš Dubina
+ *
+ * @author Thomas
  */
-
 public class UserInterface extends Application {
 
+    /**
+     * Primarní okno nasi aplikace
+     */
     public static Stage primaryStage;
+
+    /**
+     * ListView struktura pro zobrazeni slovniku
+     */
     public static ListView listView;
+
+    /**
+     * TextArea je misto pro zobrazeni naseho textu
+     */
     public static TextArea textArea;
+
+    /**
+     * BuffWriter vyuzivame pro zapsani dat do souboru
+     */
     public static BufferedWriter BuffWriter;
+
+    /**
+     * textAreaWords slouzi pro vypsani nejblizsich slov
+     */
     public static TextArea textAreaWords;
+
+    /**
+     * textAreaIndex slouzi pro vypsani indexu, jestlize se hledane slovo
+     * nachazi v textu
+     */
     public static TextArea textAreaIndex;
     List<String> array;
 
@@ -42,6 +65,10 @@ public class UserInterface extends Application {
     private final int LIST_MARGIN = 5;
     private final int LIST_PADDING = 2;
     private final int BUTTON_SIZE = 80;
+
+    /**
+     * searchTextField kolonka pro hledani slova
+     */
     public static TextField searchTextField;
     int i = 3;
 
@@ -59,16 +86,21 @@ public class UserInterface extends Application {
     }
 
     /**
-     * Vytvoření okna pro uživatele
+     * Vytvoreni sceny pro program
      *
-     * @return
-     * @throws IOException
+     * @return @throws IOException neexistence vstupu
      */
     private Scene createScene() throws IOException {
         Scene scene = new Scene(getRoot(), WIDTH, HEIGHT);
         return scene;
     }
 
+    /**
+     * getRoot slouzo pro vytvoreni obsahu v GUI
+     *
+     * @return vraci rootPane
+     * @throws IOException chyba pri vstupu
+     */
     public Parent getRoot() throws IOException {
         BorderPane rootPane = new BorderPane();
         rootPane.setCenter(textArea());
@@ -77,6 +109,12 @@ public class UserInterface extends Application {
         return rootPane;
     }
 
+    /**
+     * dictionaryListView vytvoreni list view pro zobrazeni slovniku
+     *
+     * @return vraci rozlozeni list view a tlacitek pro ovladani
+     * @throws IOException chyba vstupu
+     */
     private Node dictionaryListView() throws IOException {
         BorderPane borderPane = new BorderPane();
         listView = new ListView();
@@ -94,6 +132,11 @@ public class UserInterface extends Application {
 
     }
 
+    /**
+     *dictionaryControl je metoda, ve ktere se vytvori tlacitka pro obladani 
+     * @return vraci HBox tlacitek
+     * @throws IOException chyba vstupu 
+     */
     private Node dictionaryControl() throws IOException {
 
         HBox butts = new HBox();
@@ -128,7 +171,10 @@ public class UserInterface extends Application {
 
         return butts;
     }
-
+/**
+ * textArea je misto pro ve kterem se zobrazi nas nahrany text 
+ * @return vraci borderPane
+ */
     private Node textArea() {
         BorderPane borderPane = new BorderPane();
         textArea = new TextArea();
@@ -140,7 +186,10 @@ public class UserInterface extends Application {
         return borderPane;
 
     }
-
+/**
+ * textAreaControl vytvoreni ovladacich prvku pro ovladani textArea
+ * @return vraci HBox tlacitek
+ */
     private Node textAreaControl() {
 
         HBox controls = new HBox();
@@ -157,7 +206,9 @@ public class UserInterface extends Application {
         return controls;
 
     }
-
+/**
+ * SearchButtonAction je pomocná metoda ve ktere se provedou vsechny funkce, ktere ma vykonat tlacitko search 
+ */
     private void SearchButtonAction() {
         String searchWord = searchTextField.getText().toLowerCase();
         searchWord = searchWord.replaceAll("[^a-z]", "");
@@ -199,15 +250,15 @@ public class UserInterface extends Application {
                 Dictionary.treeSet.add(searchWord);
                 Trie.uploadDataToTrie();
                 Dictionary.nonDuplicatedFilledList();
-            } else {
+                // ... user chose "Add"
             }
         } else {
             textAreaIndex = new TextArea();
-            textAreaIndex.setPromptText("Searching word is not in your text!");
+            textAreaIndex.setPromptText("Searching word is not in you text!");
             textAreaIndex.setEditable(false);
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setHeaderText("Search word was founded!");
-            alert.setContentText("The founded word: '" + searchTextField.getText().toLowerCase() + "' is already in your dictionary.");
+            alert.setContentText("The founded word: '" + searchTextField.getText().toLowerCase() + "' is in you dictionary.");
             alert.setTitle("Search word");
 
             GridPane gridPane = new GridPane();
@@ -224,18 +275,26 @@ public class UserInterface extends Application {
         }
     }
 
+    /**
+     *PrintSortedLeven vypsani serazeneho leveinsteina 
+     */
     public void PrintSortedLeven() {
         if (array.size() < 10) {
             for (int i = 0; i <= array.size() - 1; i++) {
                 UserInterface.textAreaWords.appendText(array.get(i) + "\n");
+                //System.out.println(array.get(i).toString());
             }
         } else {
             for (int i = 0; i < 10; i++) {
                 UserInterface.textAreaWords.appendText(array.get(i) + "\n");
+                //System.out.println(array.get(i).toString());
             }
         }
     }
-
+/**
+ *  metoda menu vytvori ovladaci prvky pro menu 
+ * @return vraci radek s ovladacimy prvky 
+ */
     private Node menu() {
 
         MenuBar bar = new MenuBar();
@@ -247,21 +306,15 @@ public class UserInterface extends Application {
         MenuItem textitem2 = new MenuItem("_Open File");
         textitem2.setOnAction(event -> data.uploadText());
 
+        MenuItem textItem3 = new MenuItem("_Save File");
 
-        text.getItems().addAll(textitem2, textitem1);
+        text.getItems().addAll(textitem2, textItem3, textitem1);
 
         Menu dic = new Menu("_Dictionary");
         MenuItem dicItem1 = new MenuItem("_Open");
         dicItem1.setOnAction(event -> data.uploadDictionary());
 
         MenuItem dicItem2 = new MenuItem("_Save");
-        dicItem2.setOnAction(event -> {
-            try {
-                data.saveDictionary();
-            } catch (IOException ex) {
-                Logger.getLogger(UserInterface.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
 
         dic.getItems().addAll(dicItem1, dicItem2);
 

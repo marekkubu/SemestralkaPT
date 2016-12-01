@@ -8,6 +8,12 @@ public class Levenshtein implements Comparator<String> {
 
     String searchWord;
 
+    /**
+     * Metoda levenshteinDistance vypočítává levenštejnovu metriku ze dvou zadaných slov
+     * @param s první slovo
+     * @param t druhé slovo 
+     * @return vrací se hodnota metriky
+     */
     static int levenshteinDistance(final String s, final String t) {
 
         if (s == t) {
@@ -29,12 +35,10 @@ public class Levenshtein implements Comparator<String> {
 
         for (int i = 0; i < s.length(); i++) {
             v1[0] = i + 1;
-
             for (int j = 0; j < t.length(); j++) {
                 int cost = (s.charAt(i) == t.charAt(j)) ? 0 : 1;
                 v1[j + 1] = Math.min(Math.min(v1[j] + 1, v0[j + 1] + 1), v0[j] + cost);
             }
-
             System.arraycopy(v1, 0, v0, 0, v0.length);
         }
 
@@ -42,11 +46,19 @@ public class Levenshtein implements Comparator<String> {
 
     }
 
+    /**
+     *Metoda  Levenshtein() vloží do proměnné searchWord obsah text labelu
+     */
     public Levenshtein() {
         this.searchWord = UserInterface.searchTextField.getText().toLowerCase();
     }
 
-
+    /**
+     * Metoda compare porovnává dvě hodnoty Levenštejnovi metriky a vrací jejich rozdíl
+     * @param first první slovo 
+     * @param second druhé slovo 
+     * @return vrací se rozdíl hodnot Lev. metriky
+     */
     @Override
     public int compare(String first, String second) {
         return (levenshteinDistance(first, searchWord) - levenshteinDistance(second, searchWord));

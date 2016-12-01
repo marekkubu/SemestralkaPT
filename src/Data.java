@@ -22,6 +22,13 @@ public class Data {
 
     }
 
+    /**
+     * Metoda  uploadMyFile zajisti nahrani textoveho souboru se slovnikem 
+     * a jejich nakopirovani do list view.
+     * automaticky provedeno pri startu programu
+     * 
+     * @param file txt soubor se slovníkem
+     */
     public static void uploadMyFile(File file) {
         if (file != null) {
             ObservableList<String> data = uploadFile(file);
@@ -66,7 +73,7 @@ public class Data {
      * data.
      *
      * @param file
-     * @return
+     * @return str vrací string 
      */
     public static ObservableList<String> uploadFile(File file) {
         ObservableList<String> str = FXCollections.observableArrayList();
@@ -77,8 +84,9 @@ public class Data {
             String line;
 
             while ((line = in.readLine()) != null) {
-                if (!line.equals(""))
+                if (!line.equals("")) {
                     str.add(line);
+                }
             }
 
         } catch (UnsupportedEncodingException e) {
@@ -108,13 +116,13 @@ public class Data {
             }
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Save completed");
-            alert.setContentText("Dictionary was save");
+            alert.setContentText("Distionary was save");
             alert.showAndWait();
 
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Error");
-            alert.setContentText("Dictionary was not save");
+            alert.setContentText("Distionary was not save");
             alert.showAndWait();
 
         }

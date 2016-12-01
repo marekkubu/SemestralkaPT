@@ -1,7 +1,6 @@
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
 import java.util.*;
 
 /**
@@ -24,6 +23,7 @@ public class Dictionary {
 
         treeSet.addAll(Arrays.asList(words));
         Trie.uploadDataToTrie();
+        //Trie.komprimace(Trie.root);
     }
 
     /**
@@ -32,8 +32,9 @@ public class Dictionary {
     public static void nonDuplicatedFilledList() {
         list.clear();
         Dictionary.treeSet.stream().forEach((s) -> {
-            if (!s.equals(""))
+            if (!s.equals("")) {
                 list.add(s);
+            }
         });
         UserInterface.listView.setItems(list);
     }
