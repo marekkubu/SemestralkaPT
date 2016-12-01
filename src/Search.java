@@ -6,7 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Created by Marek on 14. 10. 2016.
+ * Created by Marek Kubů and Tomáš Dubina
  */
 public class Search {
 
@@ -16,7 +16,7 @@ public class Search {
      * Metoda pro vyhledávání zadaného slova. Vypíše a uloží nalezená slova do
      * soubouru. Včetně jejich počátečního a koncového indexu.
      *
-     * @param wordToFind
+     * @param wordToFind Slovo, které máme vyhledat v textu.
      */
     public void indexSearching(String wordToFind) throws IOException {
         String str = UserInterface.textArea.getText().toLowerCase();
@@ -27,7 +27,6 @@ public class Search {
         UserInterface.BuffWriter = new BufferedWriter(new FileWriter("searchOut.txt"));
         while (match.find()) {
             UserInterface.textAreaIndex.appendText("Searched word '" + wordToFind + "' index: " + match.start() + "-" + (match.end() - 1) + "\n");
-            //System.out.println("Searched word '" + wordToFind + "' index: " + match.start() + "-" + (match.end()-1));
             UserInterface.BuffWriter.write("Searched word '" + wordToFind + "' index: " + match.start() + "-" + (match.end() - 1));
             UserInterface.BuffWriter.newLine();
 

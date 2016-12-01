@@ -2,28 +2,41 @@
 /**
  * Created by Marek on 17. 11. 2016.
  */
-import java.util.ArrayList;
-import java.util.List;
 
 public class Trie {
-
+    /**
+     * Hlavni uzel TRIE
+     */
     public static Node root;
 
+    /**
+     * Globalni promenna, ktera zaznamenava aktualni pozici nalezeneho potomka uzlu
+     */
+    public static int indexPotomka = 0;
 
-
-
-    public static int indexPotomka =0;
-
+    /**
+     * Ze znaku ziskame pozici
+     * @param x
+     * @return 0-25
+     */
     static int getIndex(char x) {
         return ((int) x) - ((int) 'a');
     }
 
+    /**
+     * Vytvoření uzle
+     */
     static class Node {
 
         String data;
         boolean isLeaf;
         Node[] children;
 
+        /**
+         * Konstruktor uzle
+         * @param data Cast nebo cele slovo
+         * @param leaf Oznaceni konce slova
+         */
         Node(String data, boolean leaf) {
             this.data = data;
             this.isLeaf = leaf;
@@ -32,6 +45,11 @@ public class Trie {
 
     }
 
+    /**
+     * Vlozeni slova do trie
+     * @param data Slovo k vlozeni
+     * @param root Aktualni uzel
+     */
     static void insert(String data, Node root) {
         if (data == null || data.length() == 0) {
             return;
@@ -52,20 +70,11 @@ public class Trie {
         }
     }
 
-    static void vypis(Node root) {
-        for (int i = 0; i < root.children.length; i++) {
-            if (root.children[i] != null && root.children[i].isLeaf) {
-                System.out.println(root.children[i].data + " is Leaf" + " i=" + i);
-            }
-
-            Node child = root.children[i];
-            if (root.children[i] != null && child.children != null) {
-                vypis(child);
-            }
-        }
-
-    }
-
+    /**
+     * Zjisti pocet potomku
+     * @param root Aktualni uzel
+     * @return Pocet potomku
+     */
     static int pocetPotomku(Node root) {
         int pocet = 0;
         for (int i = 0; i < root.children.length; i++) {
@@ -78,123 +87,72 @@ public class Trie {
     }
 
     /**
-     *
-     * @param root
+     * Komprimuje trii, vola funci linkNode
+     * @param root Aktualni uzel
      */
-   /* static void komprimace(Node root) {
+    static void komprimace(Node root) {
         for (Node children : root.children) {
             if (children != null) {
-                Node child = children;
-                if (child.children != null) {
-                    for (Node children1 : child.children) {
-                        if (pocetPotomku(child) == 1 && !child.isLeaf) {
-                            if (children1 != null) {
-                                if (children1.data == null) {
-                                    return;
-                                }
-                                children1.data = child.data.concat(children1.data);
-                                child.isLeaf = children1.isLeaf;
-                                child.data = null;
-                                komprimace(child);
-                            } else if (child.children != null && pocetPotomku(child) == 1
-                                    && child.isLeaf && children1 != null) {
-                                komprimace(children1);
-                            }
-                        } else if (pocetPotomku(child) > 1 && children1 != null
-                                && !children1.isLeaf) {
-                            komprimace(child);
-                        }
-                    }
-                }
-            } //                       bear bell bid bull buy sell stock stop
-        }
-    }*/
-    static void komprimace(Node root){
-        for (Node children : root.children) {
-            if (children != null) {
-                // System.out.println(root.children[0].data);
                 linkNode(children);
             }
         }
 
     }
-    static void linkNode(Node child ){
-        if (child != null && !child.isLeaf && pocetPotomku(child)==1) {
-            child.data=child.data.concat(child.children[indexPotomka].data);
-            child.isLeaf=child.children[indexPotomka].isLeaf;
-            child.children=child.children[indexPotomka].children;
+
+    /**
+     * Vnorena metoda v metode komprimace
+     * @param child Aktualni uzel
+     */
+    static void linkNode(Node child) {
+        if (child != null && !child.isLeaf && pocetPotomku(child) == 1) {
+            child.data = child.data.concat(child.children[indexPotomka].data);
+            child.isLeaf = child.children[indexPotomka].isLeaf;
+            child.children = child.children[indexPotomka].children;
             linkNode(child);
 
-        }
-        else if (child != null && child.isLeaf && pocetPotomku(child)==1) {
+        } else if (child != null && child.isLeaf && pocetPotomku(child) == 1) {
             linkNode(child.children[indexPotomka]);
-        }
-        else if (pocetPotomku(child)>1){
+        } else if (pocetPotomku(child) > 1) {
             komprimace(child);
         }
     }
 
-  static boolean find (String data, Node root){
+    /**
+     * Vyhledavani pozadovaneho slova v komprimovane trii
+     * @param data Vyhledavane slovo
+     * @param root Aktualni uzel
+     * @return true or false
+     */
+    static boolean find(String data, Node root) {
+        Node node;
 
-      Node node;
-      char x = data.charAt(0);
+        char x = data.charAt(0);
 
-      if(root.children[getIndex(x)] == null){
-          return false;
-      }
-      else{
+        if (root.children[getIndex(x)] == null) {
+            return false;
+        } else {
             node = root.children[getIndex(x)];
-            System.out.println(root.children[getIndex(x)].data +" index");
-
-            for (int i = 1; i < data.length()+1; i++) {
-                String s = data.substring(0,i);
-                if (node.data.equals(s) && node.isLeaf && data.length()== node.data.length()){
+            for (int i = 1; i < data.length() + 1; i++) {
+                String s = data.substring(0, i);
+                if (node.data.equals(s) && node.isLeaf && data.length() == node.data.length()) {
                     return true;
+                } else if (node.data.equals(s) && pocetPotomku(node) >= 1) {
+                    return find(data.substring(i), node);
                 }
 
-               else if (node.data.equals(s) && node.isLeaf && pocetPotomku(node) >1 || node.data.equals(s) && pocetPotomku(node) >=1) {
-                    return find(data.substring(i),node);
-                }
-
-                /*else if (node.data.equals(s) && pocetPotomku(node) >=1) {
-                    return find(data.substring(i),node);
-                }*/
             }
             return false;
         }
     }
 
-
+    /**
+     * Nacte data ze slovniku do trie a zavola komprimaci
+     */
     public static void uploadDataToTrie() {
         root = new Node(null, false);
         for (int i = 0; i < Dictionary.treeSet.size(); i++) {
             Trie.insert(Dictionary.treeSet.toArray()[i].toString(), Trie.root);
         }
         komprimace(root);
-        System.out.println(Trie.getAll().toString());
     }
-
-    private static List<String> strings = new ArrayList<>();
-
-    public static List<String> getAll() {
-        strings = new ArrayList<>();
-        findAllDFS(root, "");
-        return strings;
-    }
-
-    private static void findAllDFS(Node node, String old) {
-        String sOld = old;
-        if (node != null) {
-            if (!"".equals(node.data)) {
-                sOld = sOld + node.data;
-            }
-            if (node.isLeaf) {
-                strings.add(sOld);
-            }
-            for (Node node1 : node.children) {
-                findAllDFS(node1, sOld);
-            }
-        }
-    }
-
 }

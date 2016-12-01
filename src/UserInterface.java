@@ -24,9 +24,9 @@ import javafx.stage.Stage;
 
 
 /**
- *
- * @author Thomas
+ * Created by Marek Kubů and Tomáš Dubina
  */
+
 public class UserInterface extends Application {
 
     public static Stage primaryStage;
@@ -58,6 +58,12 @@ public class UserInterface extends Application {
 
     }
 
+    /**
+     * Vytvoření okna pro uživatele
+     *
+     * @return
+     * @throws IOException
+     */
     private Scene createScene() throws IOException {
         Scene scene = new Scene(getRoot(), WIDTH, HEIGHT);
         return scene;
@@ -193,17 +199,15 @@ public class UserInterface extends Application {
                 Dictionary.treeSet.add(searchWord);
                 Trie.uploadDataToTrie();
                 Dictionary.nonDuplicatedFilledList();
-                // ... user chose "Add"
             } else {
-            // ... user chose CANCEL or closed the dialog
             }
         } else {
             textAreaIndex = new TextArea();
-            textAreaIndex.setPromptText("Searching word is not in you text!");
+            textAreaIndex.setPromptText("Searching word is not in your text!");
             textAreaIndex.setEditable(false);
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setHeaderText("Search word was founded!");
-            alert.setContentText("The founded word: '" + searchTextField.getText().toLowerCase() + "' is in you dictionary.");
+            alert.setContentText("The founded word: '" + searchTextField.getText().toLowerCase() + "' is already in your dictionary.");
             alert.setTitle("Search word");
 
             GridPane gridPane = new GridPane();
@@ -224,12 +228,10 @@ public class UserInterface extends Application {
         if (array.size() < 10) {
             for (int i = 0; i <= array.size() - 1; i++) {
                 UserInterface.textAreaWords.appendText(array.get(i) + "\n");
-                //System.out.println(array.get(i).toString());
             }
         } else {
             for (int i = 0; i < 10; i++) {
                 UserInterface.textAreaWords.appendText(array.get(i) + "\n");
-                //System.out.println(array.get(i).toString());
             }
         }
     }
@@ -245,15 +247,21 @@ public class UserInterface extends Application {
         MenuItem textitem2 = new MenuItem("_Open File");
         textitem2.setOnAction(event -> data.uploadText());
 
-        MenuItem textItem3 = new MenuItem("_Save File");
 
-        text.getItems().addAll(textitem2, textItem3, textitem1);
+        text.getItems().addAll(textitem2, textitem1);
 
         Menu dic = new Menu("_Dictionary");
         MenuItem dicItem1 = new MenuItem("_Open");
         dicItem1.setOnAction(event -> data.uploadDictionary());
 
         MenuItem dicItem2 = new MenuItem("_Save");
+        dicItem2.setOnAction(event -> {
+            try {
+                data.saveDictionary();
+            } catch (IOException ex) {
+                Logger.getLogger(UserInterface.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
 
         dic.getItems().addAll(dicItem1, dicItem2);
 

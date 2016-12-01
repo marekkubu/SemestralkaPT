@@ -2,7 +2,6 @@
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Dialog;
 import javafx.stage.FileChooser;
 
 import java.io.*;
@@ -78,8 +77,8 @@ public class Data {
             String line;
 
             while ((line = in.readLine()) != null) {
-                if(!line.equals(""))
-                str.add(line);
+                if (!line.equals(""))
+                    str.add(line);
             }
 
         } catch (UnsupportedEncodingException e) {
@@ -109,13 +108,13 @@ public class Data {
             }
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Save completed");
-            alert.setContentText("Distionary was save");
+            alert.setContentText("Dictionary was save");
             alert.showAndWait();
 
-        }catch (Exception e){
+        } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Error");
-            alert.setContentText("Distionary was not save");
+            alert.setContentText("Dictionary was not save");
             alert.showAndWait();
 
         }
